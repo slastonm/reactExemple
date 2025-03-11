@@ -56,8 +56,8 @@ function App() {
             <Route path="/" element={<Section prod={prod} selectProd={selectProd} />} />
             <Route path="/example" element={<Example />} />
             <Route path="/categories/:id" element={<CategoryProducts />} />
-            <Route path="/products" element={<SingleProduct />} />
-            <Route path="/basket" element={<Basket />} selectedProduct={selectedProduct} />
+            <Route path="/products/:id" element={<SingleProduct selectProd={selectProd} />} />
+            <Route path="/basket" element={<Basket selectedProduct={selectedProduct} remove={remove} />} />
             <Route path="/login" element={<Authentication />} />
             <Route path="/register" element={<Register />} />
           </Routes>

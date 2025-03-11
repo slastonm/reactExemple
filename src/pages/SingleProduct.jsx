@@ -1,66 +1,65 @@
-import React, {useState, useEffect} from 'react';
+// Then update SingleProduct.jsx to fetch and display a single product:
+import React, { useState, useEffect } from 'react';
+import { useParams } from 'react-router-dom';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faBasketShopping } from '@fortawesome/free-solid-svg-icons';
 
-
-function SingleProduct({prod}) {
-    // const [image, setImage]=useState();
-    // useEffect(()=>{
-    //     if (!image.length) return;
-    //     setImage(value.images[0]);
-    // }, [value.images])
+function SingleProduct({ selectProd }) {
+    const { id } = useParams();
+    const [product, setProduct] = useState(null);
+    const [loading, setLoading] = useState(true);
     
+    useEffect(() => {
+        fetch(`https://api.escuelajs.co/api/v1/products/${id}`)
+            .then(resp => resp.json())
+            .then(data => {
+                setProduct(data);
+                setLoading(false);
+            })
+            .catch(err => {
+                console.error('Error fetching product:', err);
+                setLoading(false);
+            });
+    }, [id]);
+    
+    if (loading) {
+        return <p>Loading product...</p>;
+    }
+    
+    if (!product) {
+        return <p>Product not found</p>;
+    }
     
     return (
-        <>
-        {prod.map((value, index)=>(
-                    <div className="card m-2 p-2" style={{width:'18rem'}}>
-                        <div>
-                            <img key={`${index}_${value.title}`}
-                                src={value.images[0]} 
-                                className="card-img-top" 
-                                alt={value.title}
-                                style={{width:'100%',
-                                height:'18rem'}}/>
-                                {/* {value.images.map((image, i)=>(
-                                    <div
-                                    key={i}>
-                                        <img src={image} alt=""
-                                        onClick={()=>setImage(value.image)} />
-                                    </div>
-                                ))} */}
-                            
-                        </div>
-
+        <div className="container mt-4">
+            <div className="card">
+                <div className="row g-0">
+                    <div className="col-md-4">
+                        {product.category && product.category.image && (
+                            <img 
+                                src={product.category.image} 
+                                className="img-fluid rounded-start" 
+                                alt={product.title} 
+                                style={{height: '100%', objectFit: 'cover'}}
+                            />
+                        )}
+                    </div>
+                    <div className="col-md-8">
                         <div className="card-body">
-                            <h5 key= {`${value.title}_${index}`} className="card-title">{value.title}</h5>
-                            <h5 key= {value.id} className="card-title">{value.price}</h5>
-                            <p>{value.description}</p>
-                            <a key={value.id} href={`https://api.escuelajs.co/api/v1/products`} className="btn  btn-outline-secondary">Go</a>
+                            <h2 className="card-title">{product.title}</h2>
+                            <h4 className="card-text text-primary">{product.price} $</h4>
+                            <p className="card-text">{product.description}</p>
+                            <button 
+                                className="btn" 
+                                onClick={() => selectProd(product)}
+                            >
+                                <FontAwesomeIcon icon={faBasketShopping} className='icon'/> Add to basket
+                            </button>
                         </div>
                     </div>
-        ))}
-        
-       </>
-
-
-
-    //     goods &&
-    //    {goods.map((good, index)=>(
-    //         <div className="card m-2 p-2" style={{width:'18rem'}}>
-    //             <img key={`${index}_${good.title}`}
-    //                 src={good.images[0]} 
-    //                 className="card-img-top" 
-    //                 alt={good.title}
-    //                 style={{width:'100%',
-    //                 height:'18rem'}}/>
-                    
-    //         <div className="card-body">
-    //             <h5 key= {`${good.title}_${index}`} className="card-title">{good.title}</h5>
-    //             <h5 key= {good.id} className="card-title">{good.price}</h5>
-    //                 <p>{good.description}</p>
-    //             <a key={id} href={`https://api.escuelajs.co/api/v1/products/${id}`} className="btn btn-outline-secondary">Go</a>
-    //         </div>
-    //     </div>
-    //     ))}
+                </div>
+            </div>
+        </div>
     );
 }
 

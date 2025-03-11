@@ -34,6 +34,13 @@ function Block({title, id, category, price, description, index, selectProd}) {
                             </button>
                         <button type="button" className="btn"><FontAwesomeIcon icon={faBasketShopping} className='icon'/>
                         </button>
+                        <button 
+                            type="button" 
+                            className="btn"
+                            onClick={() => selectProd({id, title, price, category})}
+                            >
+                            <FontAwesomeIcon icon={faBasketShopping} className='icon'/>
+                        </button>
                     </div>
                 </div>
                 
