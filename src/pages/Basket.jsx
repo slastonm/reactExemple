@@ -1,14 +1,10 @@
-// In Basket.jsx:
 function Basket({selectedProduct, remove}) {
+    // Calculate total price
+    const totalPrice = selectedProduct ? selectedProduct.reduce((acc, product) => {
+        const price = product.price || 0;
+        return acc + price;
+    }, 0) : 0;
     
-    function Basket({selectedProduct, remove}) {
-        const totalPrice = selectedProduct ? selectedProduct.reduce((acc, product) => {
-            const price = product.price || 0;
-            return acc + price;
-        }, 0) : 0;
-        
-    }
-
     return (
         <>
         <div className='container'>
@@ -36,3 +32,5 @@ function Basket({selectedProduct, remove}) {
         </>
     );
 }
+
+export default Basket;
